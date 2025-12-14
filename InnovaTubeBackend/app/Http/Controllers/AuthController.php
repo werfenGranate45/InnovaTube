@@ -28,7 +28,7 @@ class AuthController extends Controller
 
         return response()->json([
             'success' => 'Login correcto',
-            'token' => $user->createToken('api-token')->plainTextToken,
+            'token' => $user->createToken('token')->plainTextToken,
         ], 200);
     }
 
@@ -37,7 +37,7 @@ class AuthController extends Controller
         //Con esto elimina el token de la session en turno
         $request->user()->currentAccessToken()->delete();
 
-        return response()->json(['success' => 'S']);
+        return response()->json(['success' => 'logout exitoso']);
     }
 
     public function register(Request $request){
@@ -54,6 +54,7 @@ class AuthController extends Controller
 
         if($validation->fails()){
              return response()->json([
+                "contraseña" => $dataUser['password'],
                 "unsuccess" => "Valores mal capturados",
                 "errors" => $validation->errors()
             ], 403);
