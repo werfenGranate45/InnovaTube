@@ -1,0 +1,50 @@
+.sidebar {
+  width: 200px; /* ancho completo */
+  transition: width 0.3s;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+.sidebar.closed {
+  width: 60px; /* ancho “mini” */
+}
+
+.sidebar .nav-link, .sidebar .dropdown-toggle {
+  color: black !important;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar .nav-link span.text {
+  margin-left: 10px;
+  transition: opacity 0.3s;
+}
+
+.sidebar.closed .nav-link span.text {
+  opacity: 0; /* oculta texto */
+  width: 0;
+  overflow: hidden;
+}
+
+/* Contenedor del logo */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+}
+
+/* Logo dentro del sidebar */
+.sidebar img {
+  width: 130px;
+  height: auto;
+  transition: all 0.3s ease;
+}
+
+/* Logo cuando el sidebar está cerrado */
+.sidebar.closed img {
+  width: 40px;   /* ancho reducido */
+  height: auto;  /* alto proporcional */
+}
+
