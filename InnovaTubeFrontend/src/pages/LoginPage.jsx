@@ -1,6 +1,6 @@
 import FormComponent from "../component/FormComponent";
 import { useState } from "react";
-import RoutasApi from "../utils/RoutesApi";
+import RoutesApi from "../utils/RoutesApi";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
@@ -22,7 +22,7 @@ export default function LoginPage() {
     e.preventDefault()
     try {
       //Aqui consumo la api de login mandano los datos de email y password, los mando en formato JSON
-      const request = await fetch(RoutasApi.LoginAPI, {
+      const request = await fetch(RoutesApi.LoginAPI, {
         method: "POST",
         headers:
         {
@@ -36,10 +36,6 @@ export default function LoginPage() {
 
       navigate('/')
       
-
-      //En caso de que la peticion sea correcta entra esta parte, 
-      //Hago obtengo el token del request que se manda desde la API, y la guardo en la session de cookies
-      //Para que me permita consumir rutas como la de logout
       const response = await request.json()
 
       localStorage.setItem('token', response.token);

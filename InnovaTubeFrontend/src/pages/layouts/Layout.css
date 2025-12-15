@@ -1,50 +1,84 @@
+/* ===== SIDEBAR BASE ===== */
 .sidebar {
-  width: 200px; /* ancho completo */
-  transition: width 0.3s;
-  overflow: hidden;
+  width: 1000px;
   min-height: 100vh;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  background-color: #f8f9fa;
 }
 
+/* Mini sidebar (desktop) */
 .sidebar.closed {
-  width: 60px; /* ancho “mini” */
+  width: 70px;
 }
 
-.sidebar .nav-link, .sidebar .dropdown-toggle {
-  color: black !important;
-  margin-bottom: 0.5rem;
+/* Nav links */
+.sidebar .nav-link {
   display: flex;
   align-items: center;
+  gap: 10px;
 }
 
-.sidebar .nav-link span.text {
-  margin-left: 10px;
-  transition: opacity 0.3s;
+/* Texto */
+.sidebar .text {
+  transition: opacity 0.2s ease;
 }
 
-.sidebar.closed .nav-link span.text {
-  opacity: 0; /* oculta texto */
+/* Ocultar texto en mini */
+.sidebar.closed .text {
+  opacity: 0;
   width: 0;
   overflow: hidden;
 }
 
-/* Contenedor del logo */
-.logo-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 0;
-}
-
-/* Logo dentro del sidebar */
+/* Logo */
 .sidebar img {
   width: 130px;
-  height: auto;
   transition: all 0.3s ease;
 }
 
-/* Logo cuando el sidebar está cerrado */
+/* Logo mini */
 .sidebar.closed img {
-  width: 40px;   /* ancho reducido */
-  height: auto;  /* alto proporcional */
+  width: 40px;
 }
 
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1050;
+    height: 100vh;
+
+    /* oculto por default */
+    transform: translateX(-100%);
+    width: 260px;
+  }
+
+  /* visible en mobile */
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar.closed {
+    width: 260px;
+  }
+
+  .sidebar.closed .text {
+    opacity: 1;
+    width: auto;
+  }
+
+  .sidebar.closed img {
+    width: 130px;
+  }
+}
+
+/* ===== BACKDROP (mobile) ===== */
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1040;
+}

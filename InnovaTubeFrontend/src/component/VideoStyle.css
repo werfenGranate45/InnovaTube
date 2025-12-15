@@ -1,0 +1,8 @@
+.video-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* número de líneas */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: normal;
+}
