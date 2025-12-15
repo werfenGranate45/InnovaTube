@@ -22,7 +22,7 @@ class YouTubeController extends Controller
         try{
             //Esto busca en la URL del navegador no hace fetch de los datos, por lo tanto que bueno es mejor aca
             $pageToken = $request->query('pageToken'); // <- así lo recibes y lo busca ente 
-            $data = $this->youtubeService->getMostPopular("MX", $pageToken);
+            $data = $this->youtubeService->getVideos("MX", $pageToken);
             return response()->json($data, 200);
         }catch(RuntimeException $e){
             return response()->json([

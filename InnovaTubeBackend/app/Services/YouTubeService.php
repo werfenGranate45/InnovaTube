@@ -20,16 +20,38 @@ class YouTubeService
         $this->service = new Google_Service_YouTube($client);
     }
 
-    public function getMostPopular(string $country, $pageToken)
+    public function getVideos(string $country, $pageToken)
     {
         try {
             return $this->service->videos->listVideos(
                 'snippet',
                 [
                     'pageToken' => $pageToken ?? '', 
-                    'chart' => 'mostPopular',
+                    'chart' => 'chartUnspecified',
                     'regionCode' => $country,
                     'maxResults' => 12
+                ]
+            );
+        } catch (GoogleServiceException $e) {
+            return response()->json([
+                "mensaje" => $e->getMessage(),
+                "code" => $e->getCode() 
+
+            ], 502);
+        }
+    }
+
+     public function getVideoSearch(string $country, $pageToken, $query)
+    {
+        try {
+            return $this->service->search->listSearch(
+                'snippet',
+                [
+                    'pageToken'  => $pageToken ?? '',
+                    'regionCode' => $country,
+                    'maxResults' => 12,
+                    'q'          => $query,
+                    'type'       => 'video'
                 ]
             );
         } catch (GoogleServiceException $e) {
