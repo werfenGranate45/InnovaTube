@@ -1,11 +1,14 @@
 <?php
 
+use App\Models\User;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    use SoftDeletes;
     /**
      * Run the migrations.
      */
@@ -13,7 +16,11 @@ return new class extends Migration
     {
         Schema::create('favorite_videos', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(User::class);
+            $table->string("id_video")->unique()->nullable();
+            $table->boolean("is_favorite")->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

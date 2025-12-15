@@ -1,12 +1,45 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import { Form } from 'react-bootstrap';
+import { useState } from 'react';
+import RoutesApi from '../utils/RoutesApi';
 
 function VideoComponent({
   TitleVideo,
   DatePublish,
   imgVideo,
-  videoId
-}) {
+  videoId,
+  isChecked
+}
+) {
+
+  async function onHandleFavorite(checked) {
+    console.log(checked);
+    const url = checked ? RoutesApi.CreateFavoriteAPI : RoutesApi.DeleteFavoriteAPI
+
+
+    console.log(url);
+
+    try {
+      const response = await fetch(url, {
+        method: checked ? 'POST' : 'DELETE',
+        headers:
+        {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ videoId: videoId, checked: checked },
+        )
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const [isAuth, setIsAuth] = useState(
+    !!localStorage.getItem('token')
+  );
+
   return (
     <Card className="h-100">
       <Card.Img
@@ -35,6 +68,20 @@ function VideoComponent({
         >
           Ver
         </Button>
+        {
+          (isAuth) && (
+            <Form>
+              <Form.Check // prettier-ignore
+                name='check'
+                type="switch"
+                id="custom-switch"
+                label="Marcar como favorito"
+                checked={ isChecked }
+                onChange={(e) => onHandleFavorite(e.target.checked)}
+              />
+            </Form>
+          )}
+
 
       </Card.Body>
     </Card>

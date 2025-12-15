@@ -78,7 +78,7 @@ function VideosPage() {
       <Row className="g-3">
         {videos.map((video) => (
           <Col
-            key={video.id.videoId}
+            key={video.id}
             xs={12}
             sm={6}
             md={4}
