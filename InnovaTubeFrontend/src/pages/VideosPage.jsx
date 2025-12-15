@@ -27,10 +27,13 @@ function VideosPage() {
       if (find) params.append('find', find);
 
       const url = `${RoutesApi.YoutubeAPI}?${params.toString()}`;
+      console.log(url);
 
       const res = await fetch(url);
       const data = await res.json();
       console.log(data.items);
+       console.log(data.items.id);
+       console.log(data.items[0].id);
 
       setVideos(data.items);
       setNextToken(data.nextPageToken || null);
@@ -44,41 +47,38 @@ function VideosPage() {
 
 
   useEffect(() => {
+    // console.log(videos)
     fetchVideos();
-  }, []);
+  },[find]);
 
 
   return (
     <Container fluid>
-      <Row className="mb-3 justify-content-center">
-
-        <div className="d-flex justify-content-end">
-          <InputGroup>
-            <Form.Control
-              type="text"
-              placeholder="Buscar..."
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-            />
-
-            <Button
-              variant="primary"
-              onClick={() => setFind(inputValue.trim())}
-            >
-              Buscar
-            </Button>
-          </InputGroup>
-
-        </div>
-
-
-
-      </Row>
+      <Container className="my-3">
+        <Row className="justify-content-end">
+          <Col xs={12} sm={8} md={6} lg={4}>
+            <InputGroup>
+              <Form.Control
+                type="text"
+                placeholder="Buscar..."
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+              />
+              <Button
+                variant="primary"
+                onClick={() => setFind(inputValue.trim())}
+              >
+                Buscar
+              </Button>
+            </InputGroup>
+          </Col>
+        </Row>
+      </Container>
 
       <Row className="g-3">
         {videos.map((video) => (
           <Col
-            key={video.id}
+            key={video.id?.videoId || video.id}
             xs={12}
             sm={6}
             md={4}
@@ -89,7 +89,7 @@ function VideosPage() {
               TitleVideo={video.snippet.title}
               DatePublish={video.snippet.publishedAt}
               imgVideo={video.snippet.thumbnails.medium.url}
-              videoId={video.id}
+              videoId={video.id?.videoId || video.id}
             />
           </Col>
         ))}

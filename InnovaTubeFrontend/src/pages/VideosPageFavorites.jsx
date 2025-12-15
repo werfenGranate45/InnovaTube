@@ -17,96 +17,6 @@ function VideosPageFavorites() {
   const [prevToken, setPrevToken] = useState(null);
   const [loading, setLoading] = useState(false);
 
-
-
-  //     setLoading(true);
-  //     try {
-
-  //       const params = new URLSearchParams();
-  //       const videosFAVS = await fetch(RoutesApi.ShowFavoriteAPI, {
-
-  //         method: 'GET',
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           "Authorization": `Bearer ${localStorage.getItem('token')}`
-  //         },
-  //       });
-
-  //       const data = await videosFAVS.json();
-
-  //       console.log(data);
-  //       console.log(data.favoritos);
-  //     console.log(data.favoritos[0].id_video);
-
-  //     console.log('DATA COMPLETA:', data);
-  // console.log('FAVORITOS:', data.favoritos);
-  // console.log('ES ARRAY?', Array.isArray(data.favoritos));
-  // console.log('LENGTH:', data.favoritos?.length);
-
-  //     const ids = data.favoritos.map(f => f.id_video);
-  //     setIdVideo(ids);
-  //     console.log(idVideo);
-  //     if (idVideo.length > 0) {
-  //   params.append('ids', idVideo.join(','));
-
-  //   useEffect
-  // }
-
-  //     if (pageToken) params.append('pageToken', pageToken);
-  //     if (find) params.append('find', find);
-
-
-
-
-
-
-
-  //       const url = `${RoutesApi.YoutubeAPI}?${params}`;
-
-  //       console.log(url)
-  //     const res = await fetch(url);
-  //       const dataV = await res.json();
-  //       console.log(dataV.items);
-  //       const items = dataV.items;
-  //       setVideos(items);
-  //       setNextToken(dataV.nextPageToken || null);
-  //       setPrevToken(dataV.prevPageToken || null);
-
-
-
-
-
-
-
-
-
-  //       // // if (pageToken) params.append('pageToken', pageToken);
-  //       // // if (find) params.append('find', find);
-  //       // const url = `${RoutesApi.ShowFavoriteAPI}?${params.toString()}`;
-  //       // console.log(url);
-
-  //       // const request = await fetch(url, {
-  //       //   method: 'GET',
-  //       //   headers: {
-  //       //     "Content-Type": "application/json",
-  //       //     "Authorization": `Bearer ${localStorage.getItem('token')}`
-  //       //   },
-  //       // });
-
-
-  //       // const data = await request.json();
-  //       // console.log(data.favoritos);
-
-  //       // const items = data.items;
-  //       // setVideos(items);
-  //       // setNextToken(data.nextPageToken || null);
-  //       // setPrevToken(data.prevPageToken || null);
-  //     } catch (e) {
-  //       console.error(e);
-  //     }
-  //     setLoading(false);
-  //   };
-
   const fetchVideos = async (pageToken = '', ids = []) => {
     setLoading(true);
 
@@ -118,21 +28,21 @@ function VideosPageFavorites() {
       }
 
       if (pageToken) params.append('pageToken', pageToken);
-      
+
 
       const url = `${RoutesApi.ShowFavoriteIdsAPI}?${params.toString()}`;
 
-      
+
 
       console.log(url);
 
       const res = await fetch(url, {
-          headers: {
-            "Authorization": `Bearer ${localStorage.getItem('token')}`,
-             'Content-Type': 'application/json',
-            
-          }
-        });
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json',
+
+        }
+      });
 
 
 
@@ -158,8 +68,8 @@ function VideosPageFavorites() {
         const res = await fetch(RoutesApi.ShowFavoriteAPI, {
           headers: {
             "Authorization": `Bearer ${localStorage.getItem('token')}`,
-             'Content-Type': 'application/json',
-            
+            'Content-Type': 'application/json',
+
           }
         });
 
@@ -180,41 +90,36 @@ function VideosPageFavorites() {
     if (idVideo.length === 0) return;
 
     fetchVideos('', idVideo);
-  }, [idVideo]);
-
+  }, [idVideo, find]);
 
 
   return (
     <Container fluid>
-      <Row className="mb-3 justify-content-center">
-
-        <div className="d-flex justify-content-end">
-          <InputGroup>
-            <Form.Control
-              type="text"
-              placeholder="Buscar..."
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-            />
-
-            <Button
-              variant="primary"
-              onClick={() => setFind(inputValue.trim())}
-            >
-              Buscar
-            </Button>
-          </InputGroup>
-
-        </div>
-
-
-
-      </Row>
+      <Container className="my-3">
+        <Row className="justify-content-end">
+          <Col xs={12} sm={8} md={6} lg={4}>
+            <InputGroup>
+              <Form.Control
+                type="text"
+                placeholder="Buscar..."
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+              />
+              <Button
+                variant="primary"
+                onClick={() => setFind(inputValue.trim())}
+              >
+                Buscar
+              </Button>
+            </InputGroup>
+          </Col>
+        </Row>
+      </Container>
 
       <Row className="g-3">
         {videos.map((video) => (
           <Col
-            key={video.id}
+            key={video.id?.videoId || video.id}
             xs={12}
             sm={6}
             md={4}
@@ -226,7 +131,7 @@ function VideosPageFavorites() {
               TitleVideo={video.snippet.title}
               DatePublish={video.snippet.publishedAt}
               imgVideo={video.snippet.thumbnails.medium.url}
-              videoId={video.id}
+              videoId={video.id?.videoId || video.id}
             />
           </Col>
         ))}
@@ -251,7 +156,5 @@ function VideosPageFavorites() {
     </Container>
   );
 }
-
-
 
 export default VideosPageFavorites;

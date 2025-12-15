@@ -8,11 +8,12 @@ use Illuminate\Support\Facades\Validator;
 
 class FavoriteVideosController extends Controller
 {
-    public function show(Request $request){
+    public function show(Request $request)
+    {
         $id = $request->user()->getKey();
 
-        $favoritos = FavoriteVideos::where('user_id', $id )->where('deleted_at', null)->get(); 
-        
+        $favoritos = FavoriteVideos::where('user_id', $id)->where('is_favorite', true)->get();
+
         return response()->json([
             "favoritos" => $favoritos
         ], 200);
@@ -22,7 +23,7 @@ class FavoriteVideosController extends Controller
     public function store(Request $request)
     {
         $data     = $request->all();
-        
+
 
         $validation = Validator::make($data, [
             "checked" => ['required', 'boolean'],
@@ -38,8 +39,8 @@ class FavoriteVideosController extends Controller
 
         $data["user_id"]  = $request->user()->getKey();
         $data["id_video"] = $data["videoId"];
-        $data["is_favorite" ] = $data["checked"];
-        
+        $data["is_favorite"] = $data["checked"];
+
         // $exist = $request->user()->favorites()->where('id_video', $data["videoId"])->firstOrFail();
 
         // if($exist){
@@ -61,6 +62,32 @@ class FavoriteVideosController extends Controller
             "exito" => "Se ha creado",
             "favorito" => $favorite
         ], 200);
+    }
+
+    public function update(Request $request)
+    {
+        try {
+            $data = $request->all();
+
+            $data["id_video"] = $data["videoId"];
+            $data["is_favorite"] = $data["checked"];
+
+            $favorite = $request->user()->favorites()
+                ->where('id_video', $data["id_video"])
+                ->firstOrFail();
+
+            // Actualizar el valor de 'is_favorite'
+            $favorite->is_favorite = $data['is_favorite'];
+            $favorite->save();
+
+            return response()->json(['ok' => true, "id_video" => $data["id_video"]]);
+        } catch (\Throwable $th) {
+
+            return response()->json([
+                'ok' => false,
+                'message' => 'Error interno del servidor'
+            ], 500);
+        }
     }
 
     public function destroy(Request $request)

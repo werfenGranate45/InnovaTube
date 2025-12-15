@@ -3,6 +3,8 @@ import Card from 'react-bootstrap/Card';
 import { Form } from 'react-bootstrap';
 import { useState } from 'react';
 import RoutesApi from '../utils/RoutesApi';
+import { Navigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 function VideoComponent({
   TitleVideo,
@@ -12,17 +14,18 @@ function VideoComponent({
   isChecked
 }
 ) {
+  const navigate = useNavigate();
 
   async function onHandleFavorite(checked) {
     console.log(checked);
-    const url = checked ? RoutesApi.CreateFavoriteAPI : RoutesApi.DeleteFavoriteAPI
+    const url = checked ? RoutesApi.CreateFavoriteAPI : RoutesApi.UpdateFavoriteAPI
 
 
     console.log(url);
 
     try {
       const response = await fetch(url, {
-        method: checked ? 'POST' : 'DELETE',
+        method: checked ? 'POST' : 'PUT',
         headers:
         {
           "Content-Type": "application/json",
@@ -31,6 +34,9 @@ function VideoComponent({
         body: JSON.stringify({ videoId: videoId, checked: checked },
         )
       });
+      if(!checked){
+        navigate('/favorites');
+      }
     } catch (error) {
       console.error(error);
     }

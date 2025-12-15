@@ -1,68 +1,61 @@
 import FormComponent from "../component/FormComponent";
 import { useState } from "react";
 import RoutesApi from "../utils/RoutesApi";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Container, Row, Col, Card } from "react-bootstrap";
 
 export default function LoginPage() {
   const navigate = useNavigate(); 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [isWrong, setIsWrong] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  //E es el componente al que le pasamos como argumento y contiene todos los valores que son necesarios
   function onChangeEmail(e) {
-    setEmail(e.target.value.trim())
+    setEmail(e.target.value.trim());
   }
 
   function onChangePassword(e) {
-    setPassword(e.target.value.trim())
+    setPassword(e.target.value.trim());
   }
 
   async function onSubmit(e) {
-    //Esto quita el comportamiento por default del navegador
-    e.preventDefault()
+    e.preventDefault();
     try {
-      //Aqui consumo la api de login mandano los datos de email y password, los mando en formato JSON
       const request = await fetch(RoutesApi.LoginAPI, {
         method: "POST",
-        headers:
-        {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          email,
-          password
-        })
-      })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-            
-      const response = await request.json()
+      const response = await request.json();
 
-      localStorage.setItem('token', response.token);
-      navigate('/')
+      if (response.success) {
+        localStorage.setItem("token", response.token);
+        navigate("/");
+      } else {
+        setIsWrong(true);
+      }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
   const inputs = [
-    {
-      name: 'email',
-      placeholder: 'Email',
-      type: 'email',
-      onChange: onChangeEmail
-    },
-    {
-      name: 'password',
-      placeholder: 'Password',
-      type: 'password',
-      onChange: onChangePassword
-    }
+    { name: "email", placeholder: "Email", type: "email", onChange: onChangeEmail },
+    { name: "password", placeholder: "Password", type: "password", onChange: onChangePassword },
   ];
 
   return (
-    <div>
-      <FormComponent onSubmit={onSubmit} inputs={inputs} submitText="login" />
-    </div>
+    <Container fluid className="vh-100 d-flex justify-content-center align-items-center">
+      <Row>
+        <Col>
+          <Card style={{ minWidth: "300px", padding: "20px" }}>
+            <h3 className="text-center mb-3">Login</h3>
+            <FormComponent onSubmit={onSubmit} inputs={inputs} submitText="Login" />
+            {isWrong && <p className="text-danger text-center mt-2">Email o contraseña incorrectos</p>}
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 }
-

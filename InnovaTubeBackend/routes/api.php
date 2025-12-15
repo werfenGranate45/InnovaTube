@@ -16,6 +16,7 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::apiResource("/user", UserController::class);
     Route::post("/favorite/store", [FavoriteVideosController::class, "store"])->name("Fav.store");
     Route::delete("/favorite/delete", [FavoriteVideosController::class, "destroy"])->name("Fav.delete");
+    Route::put("/favorite/update", [FavoriteVideosController::class, "update"])->name("Fav.update");
     Route::get("/favorite/show", [FavoriteVideosController::class, "show"])->name("Fav.show");
     Route::post("/logout",   [AuthController::class, "logout"])->name("logout");
 });

@@ -1,6 +1,7 @@
 import FormComponent from "../component/FormComponent";
 import { useEffect, useState } from "react";
 import RoutasApi from "../utils/RoutesApi";
+import { Container, Row, Col, Card } from "react-bootstrap";
 
 
 /**
@@ -16,6 +17,7 @@ import RoutasApi from "../utils/RoutesApi";
 
 
 export default function RegisterPage(){
+  const [isWrong, setIsWrong] = useState(false);
     const [name, setName]          = useState("")
     const [last_name, setLastName] = useState("")
     const [username, setUsername]  = useState("")
@@ -68,6 +70,9 @@ export default function RegisterPage(){
       //Hago obtengo el token del request que se manda desde la API, y la guardo en la session de cookies
       //Para que me permita consumir rutas como la de logout
       const response = await request.json()
+      if(!response.ok){
+        setIsWrong(true);
+      }
       console.log(response);
 
     } catch (error) {
@@ -116,8 +121,17 @@ export default function RegisterPage(){
   ];
 
     return(
-      <div>
-        <FormComponent onSubmit={onSubmit} inputs={inputs} submitText="Registrarse"/>
-      </div>
+      <Container fluid className="vh-100 d-flex justify-content-center align-items-center">
+      <Row>
+        <Col>
+          <Card style={{ minWidth: "300px", padding: "20px" }}>
+            <h3 className="text-center mb-3">Login</h3>
+            <FormComponent onSubmit={onSubmit} inputs={inputs} submitText="Registrarse"/>
+            {isWrong && <p className="text-danger text-center mt-2">Datos incorrectos</p>}
+          </Card>
+        </Col>
+      </Row>
+    </Container>
+      
     );
 }
