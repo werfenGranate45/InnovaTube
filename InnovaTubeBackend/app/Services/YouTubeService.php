@@ -49,7 +49,7 @@ class YouTubeService
                 [
                     'pageToken'  => $pageToken ?? '',
                     'regionCode' => $country,
-                    'maxResults' => 12,
+                    'maxResults' => 8,
                     'q'          => $query,
                     'type'       => 'video'
                 ]

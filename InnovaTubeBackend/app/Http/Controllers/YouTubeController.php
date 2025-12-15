@@ -22,10 +22,25 @@ class YouTubeController extends Controller
         try{
             //Esto busca en la URL del navegador no hace fetch de los datos, por lo tanto que bueno es mejor aca
             $pageToken = $request->query('pageToken'); // <- así lo recibes y lo busca ente 
-            $data = $this->youtubeService->getVideos("MX", $pageToken);
-            return response()->json($data, 200);
+            $query     = $request->query('find');
+
+            if(!$query){
+                 $data = $this->youtubeService->getVideos("MX", $pageToken);
+
+                
+            }else{
+                // return response()->json(["pene"=>"Hola"],200);
+                $data = $this->youtubeService->getVideoSearch("MX", $pageToken, $query);
+            } 
+            
+             
+           
+            // Para debug: agregar campo extra
+
+            return response()->json($data , 200);
         }catch(RuntimeException $e){
             return response()->json([
+                'malWE' => $request->get('find'),
                 'error' => 'YouTube API error',
                 'message' => $e->getMessage(),
             ], 502); // Bad Gateway (API externa falló)
