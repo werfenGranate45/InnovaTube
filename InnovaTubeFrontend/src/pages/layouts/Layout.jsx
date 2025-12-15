@@ -8,7 +8,7 @@ import RoutesApi from '../../utils/RoutesApi';
 import RoutesPath from '../../utils/ConstRoute'
 
 function Layout({ children }) {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate(); // ✅ AQUÍ
   const [isAuth, setIsAuth] = useState(
   !!localStorage.getItem('token')
@@ -48,19 +48,19 @@ function Layout({ children }) {
             <img src={Logo}  className="El logo" alt="Logo"/>
           </Nav.Link>
           <hr color='white'/>
-          <Nav.Link href="#home" className="text-white">
+          <Nav.Link href="#home" className="text-dark">
             <FaHome /> <span className="text">Inicio</span>
           </Nav.Link>
-          <Nav.Link href="#pricing" className="text-white">
+          <Nav.Link href="#pricing" className="text-dark">
             <FaDollarSign /> <span className="text">Precios</span>
           </Nav.Link>
-          <Nav.Link href="#settings" className="text-white">
+          <Nav.Link href="#settings" className="text-dark">
             <FaCog /> <span className="text">Configuración</span>
           </Nav.Link>
           {/* En esta parte identifica si Auth que significa el token no esta nullo pues se renderiza */}
           {isAuth && (
           <Nav.Link
-            className="text-white"
+            className="text-dark"
             onClick={handleLogout}>
           <FaCog /> <span className="text">Logout</span>
           </Nav.Link>

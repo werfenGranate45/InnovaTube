@@ -27,9 +27,9 @@ class YouTubeService
                 'snippet',
                 [
                     'pageToken' => $pageToken ?? '', 
-                    'chart' => 'chartUnspecified',
+                    'chart' => 'MostPopular',
                     'regionCode' => $country,
-                    'maxResults' => 12
+                    'maxResults' => 8
                 ]
             );
         } catch (GoogleServiceException $e) {

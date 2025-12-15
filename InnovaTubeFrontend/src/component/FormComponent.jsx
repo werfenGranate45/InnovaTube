@@ -14,7 +14,7 @@ function FormComponent({ inputs, onSubmit, submitText = 'Submit' }) {
     <Container>
         <Card>
           <Card.Body className='text-center'>
-           <img src={Logo}  className="El logo" alt="Lofo" width={160} height={70}/>
+           <img src={Logo}  className="El logo" alt="Logo" width={160} height={70}/>
           </Card.Body>
         </Card>
 

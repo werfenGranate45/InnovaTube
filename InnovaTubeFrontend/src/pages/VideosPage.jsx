@@ -5,23 +5,12 @@ import Col from 'react-bootstrap/Col';
 import VideoComponent from './../component/VideoComponent';
 import RoutesApi from '../utils/RoutesApi';
 import { Pagination } from 'react-bootstrap';
-import FormCheckInput from 'react-bootstrap/esm/FormCheckInput';
-
-
 
 function VideosPage() {
   const [videos, setVideos] = useState([])
   const [nextToken, setNextToken] = useState(null);
   const [prevToken, setPrevToken] = useState(null);
   const [loading, setLoading] = useState(false);
-
-
-   const inputs = [
-    {
-      name: 'find',
-      placeholder: 'Busqueda',
-    },
-  ]
   
   // Cuando haces fetch de un metodo get, simplememte obtienes los datos
   // Y los guardas en una variable para poder renderizarlo
@@ -32,10 +21,12 @@ function VideosPage() {
         ? `${RoutesApi.YoutubeAPI}?pageToken=${pageToken}`
         : RoutesApi.YoutubeAPI;
 
-      const res = await fetch(url);
+      const res  = await fetch(url);
       const data = await res.json();
       
+      console.log(data);
       setVideos(data.items);
+      
       setNextToken(data.nextPageToken || null);
       setPrevToken(data.prevPageToken || null);
     } catch (e) {
@@ -52,10 +43,6 @@ function VideosPage() {
 
   return (
     <Container fluid>
-      {/* <FormCheckInput>
-
-      </FormCheckInput> */}
-      
       <Row className="g-3">
         {videos.map((video) => (
           <Col
