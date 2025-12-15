@@ -41,6 +41,29 @@ class YouTubeService
         }
     }
 
+
+    public function getVideosIds(string $country, $pageToken, $ids)
+    {
+        try {
+            return $this->service->videos->listVideos(
+                'snippet',
+                [
+                    'id' => $ids,
+                    'pageToken' => $pageToken ?? '', 
+                    'regionCode' => $country,
+                    'maxResults' => 8
+                ]
+            );
+        } catch (GoogleServiceException $e) {
+            return response()->json([
+                "mensaje" => $e->getMessage(),
+                "code" => $e->getCode() 
+
+            ], 502);
+        }
+    }
+
+
      public function getVideoSearch(string $country, $pageToken, $query)
     {
         try {

@@ -1,7 +1,7 @@
 import FormComponent from "../component/FormComponent";
 import { useState } from "react";
 import RoutesApi from "../utils/RoutesApi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 
 export default function LoginPage() {
   const navigate = useNavigate(); 
@@ -34,11 +34,11 @@ export default function LoginPage() {
         })
       })
 
-      navigate('/')
-      
+            
       const response = await request.json()
 
       localStorage.setItem('token', response.token);
+      navigate('/')
     } catch (error) {
       console.log(error)
     }

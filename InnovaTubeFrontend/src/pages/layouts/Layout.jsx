@@ -48,14 +48,8 @@ function Layout({ children }) {
             <img src={Logo}  className="El logo" alt="Logo"/>
           </Nav.Link>
           <hr color='white'/>
-          <Nav.Link href="#home" className="text-dark">
-            <FaHome /> <span className="text">Inicio</span>
-          </Nav.Link>
-          <Nav.Link href="#pricing" className="text-dark">
-            <FaDollarSign /> <span className="text">Precios</span>
-          </Nav.Link>
-          <Nav.Link href="#settings" className="text-dark">
-            <FaCog /> <span className="text">Configuración</span>
+          <Nav.Link  className="text-dark">
+            <FaHome  to={'/'}/> <span className="text">Inicio</span>
           </Nav.Link>
           {/* En esta parte identifica si Auth que significa el token no esta nullo pues se renderiza */}
           {isAuth && (
@@ -89,6 +83,15 @@ function Layout({ children }) {
                   to={RoutesPath.LOGIN}
                   variant="outline-dark">
                   Login
+                </Button> 
+              )}
+
+              {(isAuth) && (
+                 <Button
+                  as={Link}
+                  to={RoutesPath.FAVORITES}
+                  variant="outline-dark">
+                  Favoritos
                 </Button> 
               )}
                

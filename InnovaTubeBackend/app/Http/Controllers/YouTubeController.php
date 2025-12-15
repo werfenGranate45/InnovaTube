@@ -40,11 +40,36 @@ class YouTubeController extends Controller
             return response()->json($data , 200);
         }catch(RuntimeException $e){
             return response()->json([
-                'malWE' => $request->get('find'),
+                
                 'error' => 'YouTube API error',
                 'message' => $e->getMessage(),
             ], 502); // Bad Gateway (API externa falló)
         } 
+    }
+
+    public function showIds(Request $request){
+        $ids       = $request->query('ids');
+        $pageToken = $request->query('pageToken');
+        $idsArray = explode(',', $ids); // ["abc123", "def456", "ghi789"]
+
+
+        
+        try {
+            
+            $data = $this->youtubeService->getVideosIds("MX", $pageToken, $idsArray);
+            
+            
+            return response()->json($data , 200);
+            //code...
+        } catch (RuntimeException $e) {
+
+            return response()->json([
+                'error' => 'YouTube API error',
+                'message' => $e->getMessage(),
+            ], 502); // Bad Gateway (API externa falló)
+
+            //throw $th;
+        }
     }
 
    

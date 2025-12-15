@@ -51,4 +51,8 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function Favorites(){
+        return $this->hasMany(FavoriteVideos::class);
+    }
 }

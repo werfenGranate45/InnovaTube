@@ -4,6 +4,8 @@ import MainPage from './pages/MainPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import RoutesPath from './utils/ConstRoute';
+import MainPageFav from "./pages/MainPageFav";
+
 
 
 function App() {
@@ -20,6 +22,11 @@ function App() {
         {
           path: RoutesPath.REGISTER,
           element: <RegisterPage />
+        },
+        {
+          path: RoutesPath.FAVORITES,
+          element: <MainPageFav /> 
+            
         }
       ]);
 
