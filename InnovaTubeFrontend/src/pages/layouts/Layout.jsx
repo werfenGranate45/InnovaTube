@@ -24,10 +24,6 @@ function Layout({ children }) {
       }
     });
 
-    if (!request.ok) {
-      throw new Error("Error al cerrar sesión");
-    }
-
     // Quita el token de forma local el token 
     //Usas un logout para que se pueda rederigir
     localStorage.removeItem("token");
@@ -44,12 +40,12 @@ function Layout({ children }) {
       <div className={`sidebar ${sidebarOpen ? '' : 'closed'} bg-light`}>
         
         <Nav className="flex-column p-2">
-          <Nav.Link href="#panel" className="text-center">
+          <Nav.Link as={Link} to={RoutesPath.HOME} className="text-center">
             <img src={Logo}  className="El logo" alt="Logo"/>
           </Nav.Link>
           <hr color='white'/>
-          <Nav.Link  className="text-dark">
-            <FaHome  to={'/'}/> <span className="text">Inicio</span>
+          <Nav.Link  className="text-dark" as={Link} to={RoutesPath.HOME}>
+            <FaHome  /> <span className="text">Inicio</span>
           </Nav.Link>
           {/* En esta parte identifica si Auth que significa el token no esta nullo pues se renderiza */}
           {isAuth && (
@@ -71,7 +67,7 @@ function Layout({ children }) {
                variant="outline-black" 
                onClick={() => setSidebarOpen(!sidebarOpen)}
               className={`hamburger-btn ${sidebarOpen ? 'open' : 'closed'}`}>
-               ☰
+              ☰
              </Button>
            
              {/* Otros botones */}

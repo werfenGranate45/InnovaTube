@@ -1,46 +1,25 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { Form } from 'react-bootstrap';
-import { useState } from 'react';
-import RoutesApi from '../utils/RoutesApi';
-import { Navigate } from 'react-router-dom';
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from 'react';
 
 function VideoComponent({
   TitleVideo,
   DatePublish,
   imgVideo,
   videoId,
-  isChecked
+  onHandleChecked
 }
 ) {
-  const navigate = useNavigate();
+  // const [isChecked, setIsChecked] = useState();
 
-  async function onHandleFavorite(checked) {
-    console.log(checked);
-    const url = checked ? RoutesApi.CreateFavoriteAPI : RoutesApi.UpdateFavoriteAPI
+  // useEffect(() => {
 
+  // }, [isChecked])
 
-    console.log(url);
+  
 
-    try {
-      const response = await fetch(url, {
-        method: checked ? 'POST' : 'PUT',
-        headers:
-        {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({ videoId: videoId, checked: checked },
-        )
-      });
-      if(!checked){
-        navigate('/favorites');
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  
 
   const [isAuth, setIsAuth] = useState(
     !!localStorage.getItem('token')
@@ -75,15 +54,14 @@ function VideoComponent({
           Ver
         </Button>
         {
-          (isAuth) && (
-            <Form>
+          (isAuth && document.URL.includes('favorites')) && (
+            <Form name='nigger'>
               <Form.Check // prettier-ignore
                 name='check'
                 type="switch"
                 id="custom-switch"
                 label="Marcar como favorito"
-                checked={ isChecked }
-                onChange={(e) => onHandleFavorite(e.target.checked)}
+                onChange={ onHandleChecked }
               />
             </Form>
           )}

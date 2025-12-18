@@ -25,12 +25,10 @@ class YouTubeController extends Controller
             $query     = $request->query('find');
 
             if(!$query){
-                 $data = $this->youtubeService->getVideos("MX", $pageToken);
-
-                
+                 $data = $this->youtubeService->getVideos("US", $pageToken);
             }else{
                 // return response()->json(["pene"=>"Hola"],200);
-                $data = $this->youtubeService->getVideoSearch("MX", $pageToken, $query);
+                $data = $this->youtubeService->getVideoSearch("US", $pageToken, $query);
             } 
             
              
@@ -56,7 +54,7 @@ class YouTubeController extends Controller
         
         try {
             
-            $data = $this->youtubeService->getVideosIds("MX", $pageToken, $idsArray);
+            $data = $this->youtubeService->getVideosIds("US", $pageToken, $idsArray);
             
             
             return response()->json($data , 200);

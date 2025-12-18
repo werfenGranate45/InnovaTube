@@ -17,6 +17,36 @@ function VideosPage() {
   const [prevToken, setPrevToken] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  async function onHandleFavorite(checked, video) {
+    const chequeado = checked.target.checked;  
+    console.log("UN CHEQUEADO: ", checked.target.value);
+    console.log("UN VIDEO MAS MI GENTE: ", video);
+    console.log("UN ID ELEMENTO: ", checked.target.id);
+    const url = chequeado ? RoutesApi.CreateFavoriteAPI : RoutesApi.UpdateFavoriteAPI
+
+    try {
+
+      const request = await fetch(url, {
+        method: checked ? 'POST' : 'PUT',
+        headers:
+        {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify( {videoId: video, check: chequeado})
+      });
+
+      const response = await request.json();
+
+      if(response.exito){
+        alert("Se ha agregado con exito")
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
   const fetchVideos = async (pageToken = '') => {
     setLoading(true);
     try {
@@ -90,6 +120,7 @@ function VideosPage() {
               DatePublish={video.snippet.publishedAt}
               imgVideo={video.snippet.thumbnails.medium.url}
               videoId={video.id?.videoId || video.id}
+              onHandleChecked={(e) => onHandleFavorite(e, video.id?.videoId || video.id)}
             />
           </Col>
         ))}

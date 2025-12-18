@@ -22,8 +22,12 @@ class FavoriteVideosController extends Controller
 
     public function store(Request $request)
     {
-        $data     = $request->all();
-
+        //Si lo mandas un request desde el front con un json lo obtienes usando un metodo de json() 
+        $data = [
+            "checked" => $request->json()->get("check"),
+            "videoId" => $request->json()->get("videoId"),
+        ];
+        //$password = $request->json()->get("password");
 
         $validation = Validator::make($data, [
             "checked" => ['required', 'boolean'],
@@ -33,21 +37,14 @@ class FavoriteVideosController extends Controller
         if ($validation->fails()) {
             return response()->json([
                 "unsuccess" => "Valores mal capturados",
-                "errors" => $validation->errors()
+                "errors"    => $validation->errors()
             ], 403);
         }
 
-        $data["user_id"]  = $request->user()->getKey();
-        $data["id_video"] = $data["videoId"];
+        $data["user_id"]     = $request->user()->getKey();
+        $data["id_video"]    = $data["videoId"];
         $data["is_favorite"] = $data["checked"];
 
-        // $exist = $request->user()->favorites()->where('id_video', $data["videoId"])->firstOrFail();
-
-        // if($exist){
-        //     return response([
-        //         "unsuccess" => "Duplicado"
-        //     ], 401);
-        // }
         $favorite = FavoriteVideos::create(
             $data
         );
@@ -59,7 +56,7 @@ class FavoriteVideosController extends Controller
         }
 
         return response()->json([
-            "exito" => "Se ha creado",
+            "exito" => true,
             "favorito" => $favorite
         ], 200);
     }
@@ -68,6 +65,7 @@ class FavoriteVideosController extends Controller
     {
         try {
             $data = $request->all();
+            
 
             $data["id_video"] = $data["videoId"];
             $data["is_favorite"] = $data["checked"];
